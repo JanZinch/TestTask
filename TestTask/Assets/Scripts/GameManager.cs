@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager Instance = null;
+    public static GameManager Instance { get; private set; } = null;
 
-    public Mode GameMode = Mode.AIMING;
+    public Mode GameMode { get; set; } = Mode.AIMING;
 
     [SerializeField] private Cannon _cannon = null;
 
@@ -16,6 +16,13 @@ public class GameManager : MonoBehaviour
         if (Instance != null) Debug.LogError("Game Manager is not alone");
 
         Instance = this;
+    }
+
+    public void StartAiming() {
+
+        GameMode = Mode.AIMING;
+        _cannon.SetProjectile();
+    
     }
 
 

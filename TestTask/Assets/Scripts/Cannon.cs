@@ -28,6 +28,15 @@ public class Cannon : MonoBehaviour
         //_sight.transform.position = this.transform.position;
     }
 
+
+    public void SetProjectile() {
+
+        _projectile.RigidBody.isKinematic = true;
+        _projectile.transform.position = _spawnPoint.position;
+        _projectile.OnCollisionWithBrick += StartSimulation;
+    }
+
+
     private void OnMouseDown()
     {
         //Debug.Log(Input.mousePosition);

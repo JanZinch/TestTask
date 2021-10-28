@@ -18,6 +18,12 @@ class TransformStateRecorder
         _eulerAngles.Push(transform.eulerAngles);
     }
 
+    public void Record(Vector3 position, Vector3 eulerAngles)
+    {
+        _positions.Push(position);
+        _eulerAngles.Push(eulerAngles);
+    }
+
     public bool IsEmpty() {
 
         return _positions.Count == 0 || _eulerAngles.Count == 0;

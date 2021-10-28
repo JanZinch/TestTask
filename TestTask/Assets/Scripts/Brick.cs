@@ -9,11 +9,14 @@ public class Brick : MonoBehaviour
     private static List<Brick> _allBricks = null;
 
     [SerializeField] private Rigidbody _rigidBody = null;
+    [SerializeField] private Collider _collider = null;
 
     public static event Action OnAllBricksStationary = null;
 
     private TransformStateRecorder _stateRecorder = null;
 
+    private Vector3 _firstFramePosition = default;
+    private Vector3 _firstFrameRotation = default;
 
     //public static bool SimulationStarted { get; set; } = false;
 
@@ -30,6 +33,18 @@ public class Brick : MonoBehaviour
         _allBricks.Add(this);
 
         _stateRecorder = new TransformStateRecorder();
+    }
+
+    public static void RecordFirstFrame() {
+
+        //foreach (Brick brick in _allBricks) {
+
+        //    _stateRecorder.Record(transform);
+
+        //}
+
+            
+
     }
 
 
@@ -73,6 +88,7 @@ public class Brick : MonoBehaviour
         foreach (Brick brick in _allBricks)
         {
             brick._rigidBody.isKinematic = true;
+            brick._collider.enabled = false;
 
             brick.StartCoroutine(brick.Rewind());
         }
@@ -87,9 +103,22 @@ public class Brick : MonoBehaviour
         foreach (Brick brick in _allBricks)
         {
             brick._rigidBody.isKinematic = false;
+            brick._collider.enabled = true;
 
+            brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
+            brick.transform.position = brick._firstFramePosition;
+            brick.transform.eulerAngles = brick._firstFrameRotation;
+            
+            //brick._stateRecorder.Record(brick.transform);
         }
 
+        GameManager.Instance.StartAiming();
+
+        foreach (Brick brick in _allBricks) {
+
+            //brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
+
+        }
 
         Debug.Log("All is returned!");
 
@@ -118,19 +147,19 @@ public class Brick : MonoBehaviour
         yield return null;
     }
 
+    private void Start()
+    {
+        _firstFramePosition = transform.position;
+        _firstFrameRotation = transform.eulerAngles;
 
-    
+        _stateRecorder.Record(transform);
+    }
+
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.GameMode == GameManager.Mode.SIMULATING && !_recordingComplete)
+        if (GameManager.Instance.GameMode == GameManager.Mode.SIMULATING /* && !_recordingComplete*/)
         {
-
-            if (IsStationary())
-            {
-                _recordingComplete = true;
-
-                Debug.Log("One is stationary!");
 
                 if (CheckAllBricksStationary())
                 {
@@ -142,25 +171,14 @@ public class Brick : MonoBehaviour
 
                     StartRewinding();
 
-                    //GameManager.Instance.GameMode = GameManager.Mode.REWINDING;
                 }
 
-            }
-            else
-            {
-
+  
                 _stateRecorder.Record(transform);
 
-                // recording
-
-            }
 
         }
-        //else if (GameManager.Instance.GameMode == GameManager.Mode.REWINDING) {
 
-        //    transform.position = _stateRecorder.Play();
-        
-        //}
     }
 
 
