@@ -79,13 +79,30 @@ public class Brick : MonoBehaviour
 
     }
 
+    private static void OnStopRewinding()
+    {
+
+        GameManager.Instance.GameMode = GameManager.Mode.AIMING;
+
+        foreach (Brick brick in _allBricks)
+        {
+            brick._rigidBody.isKinematic = false;
+
+        }
+
+
+        Debug.Log("All is returned!");
+
+    }
+
+
     private IEnumerator Rewind() {
 
         WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
         while (!_stateRecorder.IsEmpty()) {
 
-            transform.position = _stateRecorder.Play();
+            _stateRecorder.PlayNext(transform);
             yield return wait;
         }
 
@@ -95,8 +112,7 @@ public class Brick : MonoBehaviour
 
         if (CheckAllBricksReturning()) {
 
-            GameManager.Instance.GameMode = GameManager.Mode.AIMING;
-            Debug.Log("All is returned!");
+            OnStopRewinding();            
         }
 
         yield return null;
@@ -133,7 +149,7 @@ public class Brick : MonoBehaviour
             else
             {
 
-                _stateRecorder.Record(transform.position);
+                _stateRecorder.Record(transform);
 
                 // recording
 
