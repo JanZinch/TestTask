@@ -5,6 +5,7 @@ public class Cannon : MonoBehaviour
     [SerializeField] private Projectile _projectile = null;
     [SerializeField] private Vector3 _force = default;
     [SerializeField] private RectTransform _sight = null;
+    [SerializeField] private float _distaceFromScreen = 0.0f;
 
     public void StartRewinding() {
 
@@ -70,8 +71,10 @@ public class Cannon : MonoBehaviour
         {
             _sight.gameObject.SetActive(false);
             Vector3 spawnPoint = _sight.TransformPoint(_sight.anchoredPosition);
-            spawnPoint.z = -5.0f;
+            spawnPoint.z = transform.position.z + _distaceFromScreen;
 
+            if (spawnPoint.y <= GameManager.Instance.FloorLevel) return;
+            
             _projectile.gameObject.SetActive(true);
             _projectile.transform.position = spawnPoint;
             _projectile.RigidBody.isKinematic = false;

@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody RigidBody { get { return _rigidBody; } private set { _rigidBody = value; } }
 
     public Action OnCollisionWithBrick = null;
+
     private TransformStateRecorder _stateRecorder = null;
 
     private void Awake()
@@ -42,10 +43,12 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Brick>(out Brick other)) {
-
-            OnCollisionWithBrick?.Invoke();        
+        if (collision.gameObject.TryGetComponent<Brick>(out Brick other) 
+            || collision.gameObject.CompareTag(GameManager.WallTag))
+        {
+            OnCollisionWithBrick?.Invoke();
         }
+
     }
 
 

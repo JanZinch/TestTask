@@ -104,11 +104,6 @@ public class Brick : MonoBehaviour
         yield return null;
     }
 
-    private void Start()
-    {
-        //_stateRecorder.Record(transform);
-    }
-
 
     private void FixedUpdate()
     {
@@ -121,7 +116,6 @@ public class Brick : MonoBehaviour
             }
 
             _stateRecorder.Record(transform);
-
         }
 
     }
@@ -131,8 +125,5 @@ public class Brick : MonoBehaviour
     {
         _allBricks.Remove(this);
     }
-
-
-    
 
 }

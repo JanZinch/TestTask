@@ -4,34 +4,28 @@ using UnityEngine;
 class TransformStateRecorder
 {
     private Stack<Vector3> _positions = null;
-    private Stack<Vector3> _eulerAngles = null;
+    private Stack<Quaternion> _rotation = null;
 
     public TransformStateRecorder() {
 
         _positions = new Stack<Vector3>();
-        _eulerAngles = new Stack<Vector3>();
+        _rotation = new Stack<Quaternion>();
     }
 
     public void Record(Transform transform) {
 
         _positions.Push(transform.position);
-        _eulerAngles.Push(transform.eulerAngles);
-    }
-
-    public void Record(Vector3 position, Vector3 eulerAngles)
-    {
-        _positions.Push(position);
-        _eulerAngles.Push(eulerAngles);
+        _rotation.Push(transform.rotation);
     }
 
     public bool IsEmpty() {
 
-        return _positions.Count == 0 || _eulerAngles.Count == 0;
+        return _positions.Count == 0 || _rotation.Count == 0;
     }
 
     public void PlayNext(Transform transform) {
 
         transform.position = _positions.Pop();
-        transform.eulerAngles = _eulerAngles.Pop();
+        transform.rotation = _rotation.Pop();
     }
 }

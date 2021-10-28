@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Cannon _cannon = null;
     [SerializeField] private TextMeshProUGUI _continueUIText = null;
+    [SerializeField] private float _floorLevel = 0.0f;
+
+    public float FloorLevel { get { return _floorLevel; } set { _floorLevel = value; } }
+
+    public const string WallTag = "Wall";
 
     public bool CollisionHappened { get; set; } = false;
 
@@ -25,6 +30,8 @@ public class GameManager : MonoBehaviour
     {
         _continueUIText.gameObject.SetActive(false);
     }
+
+
 
 
     public void NextStage() {
