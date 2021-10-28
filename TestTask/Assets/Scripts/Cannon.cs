@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Cannon : MonoBehaviour
@@ -7,6 +8,9 @@ public class Cannon : MonoBehaviour
     [SerializeField] private Transform _spawnPoint = null;
     [SerializeField] private Vector3 _force = default;
     [SerializeField] private RectTransform _sight = null;
+
+
+    public event Action OnShot = null;
 
     private void Start()
     {
@@ -66,8 +70,17 @@ public class Cannon : MonoBehaviour
 
     private void OnMouseUp()
     {
-        //_projectile.isKinematic = false;
-        //_projectile.AddForce(_force);
+
+        Vector3 point = _sight.TransformPoint(_sight.anchoredPosition);
+
+        _projectile.transform.position = new Vector3(point.x, point.y, -5.0f);
+
+        _projectile.isKinematic = false;
+        _projectile.velocity = Vector3.zero;
+        _projectile.AddForce(_force);
+
+        OnShot?.Invoke();
+    
     }
 
 }

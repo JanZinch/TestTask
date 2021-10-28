@@ -473,7 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 2700056127723054049}
   _spawnPoint: {fileID: 1141700685}
-  _force: {x: 0, y: 0, z: 235}
+  _force: {x: 0, y: 0, z: 1000}
   _sight: {fileID: 1851395783}
 --- !u!65 &623880540
 BoxCollider:
@@ -816,7 +816,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 2.77, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1040,7 +1040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2502788132430813057, guid: 756197149dda64442a19108500a25162, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.79215586
+      value: -0.52
       objectReference: {fileID: 0}
     - target: {fileID: 2502788132430813057, guid: 756197149dda64442a19108500a25162, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1118,7 +1118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -960, y: -1707}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1851395784
@@ -1172,7 +1172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2502788132430813057, guid: 756197149dda64442a19108500a25162, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.154
+      value: -1.08
       objectReference: {fileID: 0}
     - target: {fileID: 2502788132430813057, guid: 756197149dda64442a19108500a25162, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1227,6 +1227,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2549765570680720158, guid: facb694498030c34ebf13aca0c854830, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2549765570680720158, guid: facb694498030c34ebf13aca0c854830, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2700056127433700310, guid: facb694498030c34ebf13aca0c854830, type: 3}
       propertyPath: m_Name
       value: Projectile
