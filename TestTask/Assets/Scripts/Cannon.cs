@@ -12,10 +12,10 @@ public class Cannon : MonoBehaviour
         _projectile.StartRewinding();    
     }
 
-    private void OnCollision()
+    private void OnProjectileCollision()
     {
-        GameManager.Instance.CollisionHappened = true;
-        _projectile.OnCollisionWithBrick -= OnCollision;
+        GameManager.Instance.restIsDisturbed = true;
+        _projectile.OnCollisionWithBrick -= OnProjectileCollision;
     }
 
     private void Start()
@@ -27,7 +27,7 @@ public class Cannon : MonoBehaviour
 
         _projectile.RigidBody.isKinematic = true;
         _projectile.transform.position = default;
-        _projectile.OnCollisionWithBrick += OnCollision;
+        _projectile.OnCollisionWithBrick += OnProjectileCollision;
 
         _projectile.gameObject.SetActive(false);
     }

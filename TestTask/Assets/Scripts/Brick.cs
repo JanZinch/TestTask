@@ -8,7 +8,7 @@ public class Brick : MonoBehaviour
     [SerializeField] private Rigidbody _rigidBody = null;
     [SerializeField] private Collider _collider = null;
 
-    private static List<Brick> _allBricks = null;
+    private static LinkedList<Brick> _allBricks = null;
 
     public static event Action OnAllBricksStationary = null;
 
@@ -19,10 +19,10 @@ public class Brick : MonoBehaviour
     {
         if (_allBricks == null)
         {
-            _allBricks = new List<Brick>();
+            _allBricks = new LinkedList<Brick>();
         }
       
-        _allBricks.Add(this);
+        _allBricks.AddLast(this);
         _stateRecorder = new TransformStateRecorder();
     }
 
@@ -33,7 +33,7 @@ public class Brick : MonoBehaviour
 
     private static bool CheckAllBricksStationary() {
 
-        if (!GameManager.Instance.CollisionHappened) return false;
+        if (!GameManager.Instance.restIsDisturbed) return false;
 
         foreach (Brick brick in _allBricks) {
 
@@ -78,7 +78,7 @@ public class Brick : MonoBehaviour
             brick._collider.enabled = true;            
         }
          
-        Debug.Log("All is returned!");
+        Debug.Log("All are returned!");
     }
 
 
@@ -92,9 +92,7 @@ public class Brick : MonoBehaviour
             yield return wait;
         }
 
-
         Debug.Log("One is returned!");
-
 
         if (CheckAllBricksReturning()) {
 
@@ -111,7 +109,7 @@ public class Brick : MonoBehaviour
         {
             if (CheckAllBricksStationary())
             {
-                Debug.Log("All stationary!");
+                Debug.Log("All are stationary!");
                 GameManager.Instance.NextStage();  // pause
             }
 

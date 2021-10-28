@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     public const string WallTag = "Wall";
 
-    public bool CollisionHappened { get; set; } = false;
+    public bool restIsDisturbed { get; set; } = false;
 
     public static GameManager Instance { get; private set; } = null;
 
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance != null) Debug.LogError("Game Manager is not alone");
+        if (Instance != null) Debug.LogError("Game Manager is not alone.");
 
         Instance = this;
     }
@@ -30,8 +30,6 @@ public class GameManager : MonoBehaviour
     {
         _continueUIText.gameObject.SetActive(false);
     }
-
-
 
 
     public void NextStage() {
@@ -51,7 +49,7 @@ public class GameManager : MonoBehaviour
                 State = SessionState.PAUSE;
 
                 Debug.Log("New State: " + State);
-                CollisionHappened = false;
+                restIsDisturbed = false;
                 _continueUIText.gameObject.SetActive(true);
 
                 break;
