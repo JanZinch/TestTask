@@ -18,10 +18,8 @@ public class Brick : MonoBehaviour
     private Vector3 _firstFramePosition = default;
     private Vector3 _firstFrameRotation = default;
 
-    //public static bool SimulationStarted { get; set; } = false;
 
-    private bool _recordingComplete = false;
-    private bool _rewindingComplete = false;
+
 
     private void Awake()
     {
@@ -80,10 +78,12 @@ public class Brick : MonoBehaviour
         return true;
     }
 
-    private static void StartRewinding()
+    public static void StartRewinding()
     {
 
-        GameManager.Instance.GameMode = GameManager.Mode.REWINDING;
+
+
+        //GameManager.Instance.NextStage(); //= GameManager.SessionState.REWINDING;
 
         foreach (Brick brick in _allBricks)
         {
@@ -98,7 +98,7 @@ public class Brick : MonoBehaviour
     private static void OnStopRewinding()
     {
 
-        GameManager.Instance.GameMode = GameManager.Mode.AIMING;
+        //GameManager.Instance.NextStage(); //= GameManager.SessionState.AIMING;
 
         foreach (Brick brick in _allBricks)
         {
@@ -112,13 +112,8 @@ public class Brick : MonoBehaviour
             //brick._stateRecorder.Record(brick.transform);
         }
 
-        GameManager.Instance.StartAiming();
+        GameManager.Instance.NextStage(); // start aiming
 
-        foreach (Brick brick in _allBricks) {
-
-            //brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
-
-        }
 
         Debug.Log("All is returned!");
 
@@ -135,7 +130,7 @@ public class Brick : MonoBehaviour
             yield return wait;
         }
 
-        _recordingComplete = true;
+
         Debug.Log("One is returned!");
 
 
@@ -158,23 +153,25 @@ public class Brick : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.GameMode == GameManager.Mode.SIMULATING /* && !_recordingComplete*/)
+        if (GameManager.Instance.State == GameManager.SessionState.SIMULATING)
         {
+            if (CheckAllBricksStationary())
+            {
 
-                if (CheckAllBricksStationary())
-                {
+                OnAllBricksStationary?.Invoke();
+                OnAllBricksStationary = null;
 
-                    OnAllBricksStationary?.Invoke();
-                    OnAllBricksStationary = null;
+                Debug.Log("All stationary!");
 
-                    Debug.Log("All stationary!");
 
-                    StartRewinding();
+                GameManager.Instance.NextStage();  // pause
+                //StartRewinding();
 
-                }
+            }
 
-  
-                _stateRecorder.Record(transform);
+
+            _stateRecorder.Record(transform);
+
 
 
         }

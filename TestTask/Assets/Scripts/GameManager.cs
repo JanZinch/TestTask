@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance { get; private set; } = null;
 
-    public Mode GameMode { get; set; } = Mode.AIMING;
-
     [SerializeField] private Cannon _cannon = null;
+    [SerializeField] private TextMeshProUGUI _continueUIText = null;
+
+    public SessionState State { get; private set; } = SessionState.AIMING;
+
+    
 
     private void Awake()
     {
@@ -18,21 +22,76 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    public void StartAiming() {
+    private void Start()
+    {
+        _continueUIText.gameObject.SetActive(false);
+    }
 
-        GameMode = Mode.AIMING;
-        _cannon.SetProjectile();
+
+    public void NextStage() {
+
+        switch (State) {
+
+            case SessionState.AIMING:
+
+                State = SessionState.SIMULATING;
+
+                Debug.Log("New State: " + State);
+
+                break;
+
+            case SessionState.SIMULATING:
+
+                State = SessionState.PAUSE;
+
+                Debug.Log("New State: " + State);
+
+                _continueUIText.gameObject.SetActive(true);
+
+                break;
+
+            case SessionState.PAUSE:
+
+                State = SessionState.REWINDING;
+
+                Debug.Log("New State: " + State);
+
+                _continueUIText.gameObject.SetActive(false);
+                Brick.StartRewinding();
+                
+                break;
+
+            case SessionState.REWINDING:
+
+                State = SessionState.AIMING;
+
+                Debug.Log("New State: " + State);
+
+                _cannon.SetProjectile();
+                
+                break;
+        
+        }
     
     }
 
 
-    public void StartSimulation() {
 
-        //Brick.SimulationStarted = true;
+    //public void StartAiming() {
 
-        GameMode = Mode.SIMULATING;
+    //    State = SessionState.AIMING;
+    //    _cannon.SetProjectile();
     
-    }
+    //}
+
+
+    //public void StartSimulation() {
+
+    //    
+
+    //    State = SessionState.SIMULATING;
+    
+    //}
 
     private void OnEnable()
     {
@@ -44,9 +103,9 @@ public class GameManager : MonoBehaviour
         Instance = null;
     }
 
-    public enum Mode : byte { 
+    public enum SessionState : byte { 
     
-        AIMING, SIMULATING, REWINDING
+        AIMING, SIMULATING, PAUSE, REWINDING
     
     }
 
