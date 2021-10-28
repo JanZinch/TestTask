@@ -12,17 +12,22 @@ public class Brick : MonoBehaviour
     public static event Action OnAllBricksStationary = null;
 
 
-    public bool SimulationStarted { get; set; } = false;
+    public static bool SimulationStarted { get; set; } = false;
 
     private bool _recordingComplete = false;
 
     private void Awake()
     {
+        if (_bricks == null)
+        {
+            _bricks = new List<Brick>();
+        }
+      
         _bricks.Add(this);
     }
 
 
-    private bool isStationary() {
+    private bool IsStationary() {
 
         return _rigidBody.velocity == Vector3.zero;    
     }
@@ -31,7 +36,7 @@ public class Brick : MonoBehaviour
 
         foreach (Brick brick in _bricks) {
 
-            if (!brick.isStationary()) {
+            if (!brick.IsStationary()) {
 
                 return false;
             }        
@@ -45,7 +50,7 @@ public class Brick : MonoBehaviour
     {
         if (SimulationStarted && !_recordingComplete) {
 
-            if (isStationary())
+            if (IsStationary())
             {                
                 _recordingComplete = true;
 

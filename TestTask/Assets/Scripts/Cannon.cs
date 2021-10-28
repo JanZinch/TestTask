@@ -4,24 +4,35 @@ using UnityEngine;
 public class Cannon : MonoBehaviour
 {
 
-    [SerializeField] private Rigidbody _projectile = null;
+    [SerializeField] private Projectile _projectile = null;
     [SerializeField] private Transform _spawnPoint = null;
     [SerializeField] private Vector3 _force = default;
     [SerializeField] private RectTransform _sight = null;
 
 
-    public event Action OnShot = null;
+    //public event Action OnHit = null;
+
+    private void StartSimulation() {
+
+        GameManager.StartSimulation(); 
+        _projectile.OnCollisionWithBrick -= StartSimulation;
+    }
+
+    private void OnEnable()
+    {
+        _projectile.OnCollisionWithBrick += StartSimulation;
+    }
 
     private void Start()
     {
-        _projectile.isKinematic = true;
+        _projectile.RigidBody.isKinematic = true;
         _projectile.transform.position = _spawnPoint.position;
         //_sight.transform.position = this.transform.position;
     }
 
     private void OnMouseDown()
     {
-        Debug.Log(Input.mousePosition);
+        //Debug.Log(Input.mousePosition);
 
 
         TestFunc();
@@ -52,7 +63,7 @@ public class Cannon : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Debug.Log(Input.mousePosition);
+        //Debug.Log(Input.mousePosition);
 
         TestFunc();
 
@@ -75,11 +86,11 @@ public class Cannon : MonoBehaviour
 
         _projectile.transform.position = new Vector3(point.x, point.y, -5.0f);
 
-        _projectile.isKinematic = false;
-        _projectile.velocity = Vector3.zero;
-        _projectile.AddForce(_force);
+        _projectile.RigidBody.isKinematic = false;
+        _projectile.RigidBody.velocity = Vector3.zero;
+        _projectile.RigidBody.AddForce(_force);
 
-        OnShot?.Invoke();
+        //OnHit?.Invoke();
     
     }
 
