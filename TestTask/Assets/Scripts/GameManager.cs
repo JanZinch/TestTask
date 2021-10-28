@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance = null;
 
+    public Mode GameMode = Mode.AIMING;
+
     [SerializeField] private Cannon _cannon = null;
 
     private void Awake()
@@ -17,9 +19,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public static void StartSimulation() {
+    public void StartSimulation() {
 
-        Brick.SimulationStarted = true;
+        //Brick.SimulationStarted = true;
+
+        GameMode = Mode.SIMULATING;
+    
     }
 
     private void OnEnable()
@@ -30,6 +35,12 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         Instance = null;
+    }
+
+    public enum Mode : byte { 
+    
+        AIMING, SIMULATING, REWINDING
+    
     }
 
 }

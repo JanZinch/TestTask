@@ -10,11 +10,9 @@ public class Cannon : MonoBehaviour
     [SerializeField] private RectTransform _sight = null;
 
 
-    //public event Action OnHit = null;
-
     private void StartSimulation() {
 
-        GameManager.StartSimulation(); 
+        GameManager.Instance.StartSimulation(); 
         _projectile.OnCollisionWithBrick -= StartSimulation;
     }
 
