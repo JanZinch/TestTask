@@ -14,11 +14,6 @@ public class Brick : MonoBehaviour
 
     private TransformStateRecorder _stateRecorder = null;
 
-    //private Vector3 _firstFramePosition = default;
-    //private Vector3 _firstFrameRotation = default;
-
-
-
 
     private void Awake()
     {
@@ -28,7 +23,6 @@ public class Brick : MonoBehaviour
         }
       
         _allBricks.Add(this);
-
         _stateRecorder = new TransformStateRecorder();
     }
 
@@ -54,7 +48,6 @@ public class Brick : MonoBehaviour
 
     private static bool CheckAllBricksReturning()
     {
-
         foreach (Brick brick in _allBricks)
         {
             if (!brick._stateRecorder.IsEmpty())
@@ -75,7 +68,6 @@ public class Brick : MonoBehaviour
 
             brick.StartCoroutine(brick.Rewind());
         }
-
     }
 
     private static void OnStopRewinding()
@@ -83,16 +75,10 @@ public class Brick : MonoBehaviour
         foreach (Brick brick in _allBricks)
         {
             brick._rigidBody.isKinematic = false;
-            brick._collider.enabled = true;
-
-            //brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
-            //brick.transform.position = brick._firstFramePosition;
-            //brick.transform.eulerAngles = brick._firstFrameRotation;
-            
+            brick._collider.enabled = true;            
         }
          
         Debug.Log("All is returned!");
-
     }
 
 
@@ -120,10 +106,7 @@ public class Brick : MonoBehaviour
 
     private void Start()
     {
-        //_firstFramePosition = transform.position;
-        //_firstFrameRotation = transform.eulerAngles;
-
-        _stateRecorder.Record(transform);
+        //_stateRecorder.Record(transform);
     }
 
 
@@ -133,21 +116,11 @@ public class Brick : MonoBehaviour
         {
             if (CheckAllBricksStationary())
             {
-
-                OnAllBricksStationary?.Invoke();
-                OnAllBricksStationary = null;
-
                 Debug.Log("All stationary!");
-
                 GameManager.Instance.NextStage();  // pause
-
-
             }
 
-
             _stateRecorder.Record(transform);
-
-
 
         }
 

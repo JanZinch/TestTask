@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
 public class Cannon : MonoBehaviour
 {
     [SerializeField] private Projectile _projectile = null;
-    [SerializeField] private Transform _spawnPoint = null;
     [SerializeField] private Vector3 _force = default;
     [SerializeField] private RectTransform _sight = null;
 
@@ -27,8 +25,10 @@ public class Cannon : MonoBehaviour
     public void SetProjectile() {
 
         _projectile.RigidBody.isKinematic = true;
-        _projectile.transform.position = _spawnPoint.position;
+        _projectile.transform.position = default;
         _projectile.OnCollisionWithBrick += OnCollision;
+
+        _projectile.gameObject.SetActive(false);
     }
 
 
@@ -72,6 +72,7 @@ public class Cannon : MonoBehaviour
             Vector3 spawnPoint = _sight.TransformPoint(_sight.anchoredPosition);
             spawnPoint.z = -5.0f;
 
+            _projectile.gameObject.SetActive(true);
             _projectile.transform.position = spawnPoint;
             _projectile.RigidBody.isKinematic = false;
             _projectile.RigidBody.velocity = Vector3.zero;

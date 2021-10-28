@@ -3,16 +3,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-
     [SerializeField] private Rigidbody _rigidBody = null;   
     
-
     public Rigidbody RigidBody { get { return _rigidBody; } private set { _rigidBody = value; } }
 
     public Action OnCollisionWithBrick = null;
-
     private TransformStateRecorder _stateRecorder = null;
-
 
     private void Awake()
     {
@@ -29,9 +25,7 @@ public class Projectile : MonoBehaviour
 
             if (!_stateRecorder.IsEmpty())
             {
-
                 _stateRecorder.PlayNext(transform);
-
             }
             else {
 
