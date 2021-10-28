@@ -1,20 +1,19 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager Instance { get; private set; } = null;
-
     [SerializeField] private Cannon _cannon = null;
     [SerializeField] private TextMeshProUGUI _continueUIText = null;
+
+    public bool CollisionHappened { get; set; } = false;
+
+    public static GameManager Instance { get; private set; } = null;
 
     public SessionState State { get; private set; } = SessionState.AIMING;
 
     
-
     private void Awake()
     {
         if (Instance != null) Debug.LogError("Game Manager is not alone");
@@ -45,7 +44,7 @@ public class GameManager : MonoBehaviour
                 State = SessionState.PAUSE;
 
                 Debug.Log("New State: " + State);
-
+                CollisionHappened = false;
                 _continueUIText.gameObject.SetActive(true);
 
                 break;
@@ -56,8 +55,10 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log("New State: " + State);
 
+                
                 _continueUIText.gameObject.SetActive(false);
                 Brick.StartRewinding();
+                _cannon.StartRewinding();
                 
                 break;
 
@@ -75,28 +76,6 @@ public class GameManager : MonoBehaviour
     
     }
 
-
-
-    //public void StartAiming() {
-
-    //    State = SessionState.AIMING;
-    //    _cannon.SetProjectile();
-    
-    //}
-
-
-    //public void StartSimulation() {
-
-    //    
-
-    //    State = SessionState.SIMULATING;
-    
-    //}
-
-    private void OnEnable()
-    {
-        //_cannon.OnHit += () => Brick.SimulationStarted = true;
-    }
 
     private void OnDestroy()
     {

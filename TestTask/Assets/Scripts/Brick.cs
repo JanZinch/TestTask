@@ -5,18 +5,17 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour
 {
-
-    private static List<Brick> _allBricks = null;
-
     [SerializeField] private Rigidbody _rigidBody = null;
     [SerializeField] private Collider _collider = null;
+
+    private static List<Brick> _allBricks = null;
 
     public static event Action OnAllBricksStationary = null;
 
     private TransformStateRecorder _stateRecorder = null;
 
-    private Vector3 _firstFramePosition = default;
-    private Vector3 _firstFrameRotation = default;
+    //private Vector3 _firstFramePosition = default;
+    //private Vector3 _firstFrameRotation = default;
 
 
 
@@ -33,25 +32,14 @@ public class Brick : MonoBehaviour
         _stateRecorder = new TransformStateRecorder();
     }
 
-    public static void RecordFirstFrame() {
-
-        //foreach (Brick brick in _allBricks) {
-
-        //    _stateRecorder.Record(transform);
-
-        //}
-
-            
-
-    }
-
-
     private bool IsStationary() {
 
         return _rigidBody.velocity == Vector3.zero;    
     }
 
     private static bool CheckAllBricksStationary() {
+
+        if (!GameManager.Instance.CollisionHappened) return false;
 
         foreach (Brick brick in _allBricks) {
 
@@ -80,11 +68,6 @@ public class Brick : MonoBehaviour
 
     public static void StartRewinding()
     {
-
-
-
-        //GameManager.Instance.NextStage(); //= GameManager.SessionState.REWINDING;
-
         foreach (Brick brick in _allBricks)
         {
             brick._rigidBody.isKinematic = true;
@@ -97,24 +80,17 @@ public class Brick : MonoBehaviour
 
     private static void OnStopRewinding()
     {
-
-        //GameManager.Instance.NextStage(); //= GameManager.SessionState.AIMING;
-
         foreach (Brick brick in _allBricks)
         {
             brick._rigidBody.isKinematic = false;
             brick._collider.enabled = true;
 
-            brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
-            brick.transform.position = brick._firstFramePosition;
-            brick.transform.eulerAngles = brick._firstFrameRotation;
+            //brick._stateRecorder.Record(brick._firstFramePosition, brick._firstFrameRotation);
+            //brick.transform.position = brick._firstFramePosition;
+            //brick.transform.eulerAngles = brick._firstFrameRotation;
             
-            //brick._stateRecorder.Record(brick.transform);
         }
-
-        GameManager.Instance.NextStage(); // start aiming
-
-
+         
         Debug.Log("All is returned!");
 
     }
@@ -144,8 +120,8 @@ public class Brick : MonoBehaviour
 
     private void Start()
     {
-        _firstFramePosition = transform.position;
-        _firstFrameRotation = transform.eulerAngles;
+        //_firstFramePosition = transform.position;
+        //_firstFrameRotation = transform.eulerAngles;
 
         _stateRecorder.Record(transform);
     }
@@ -163,9 +139,8 @@ public class Brick : MonoBehaviour
 
                 Debug.Log("All stationary!");
 
-
                 GameManager.Instance.NextStage();  // pause
-                //StartRewinding();
+
 
             }
 
